@@ -33,7 +33,7 @@ const BlogContent: React.FunctionComponent = ({ blog }: any) => {
 	return (
 		<>
 			<Head>
-				<title>Erson Puyos | Blog</title>
+				<title>Erson Puyos | Blog | {blog.fields.title}</title>
 				<meta name="description" content="Erson Puyos | Blog" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
