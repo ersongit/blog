@@ -46,3 +46,10 @@ h1 {
 	opacity: 0.6;
 	letter-spacing: 0.5px;
 }
+.blog-content p {
+	margin: 0px;
+}
+.return-home {
+	padding-top: 20px;
+	padding-bottom: 100px;
+}

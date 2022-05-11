@@ -1,9 +1,6 @@
 import * as React from 'react'
 
-interface IAppProps {
-}
-
-const App: React.FunctionComponent<IAppProps> = (props) => {
+const App: React.FunctionComponent = () => {
 	return (
 		<>
 			<h1>Erson Puyos - Blog</h1>
