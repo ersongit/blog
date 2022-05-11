@@ -1,10 +1,27 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from "next/link"
-import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
+import { createClient, ContentfulClientApi } from 'contentful'
+
+export const getStaticProps = async() => {
+	let space: string = process.env.CONTENTFUL_SPACE_ID ? process.env.CONTENTFUL_SPACE_ID.toString() : ''
+	let accessToken: string = process.env.CONTENTFUL_ACCESS_TOKEN ? process.env.CONTENTFUL_ACCESS_TOKEN?.toString() : ''
+	const client: ContentfulClientApi = createClient({
+		space,
+		accessToken
+	})
+	const response: any = await client.getEntries({content_type: 'blog'})
+
+	return {
+		props: {
+			blogs: response.items
+		}
+	}
+}
+
+const Home: NextPage = ({ blogs }: any) => {
 	return (
 		<div>
 			<Head>
@@ -14,41 +31,15 @@ const Home: NextPage = () => {
 			</Head>
 
 			<ol className={styles.posts}>
-				<li className={styles.post}>
-					<h3 className={styles.postTitle}>
-						<Link href="/"><a>Blog Title</a></Link>
-					</h3>
-					<p className={styles.postDescription}>123 date</p>
-					<Link href="/"><a>Read post →</a></Link>
-				</li>
-				<li className={styles.post}>
-					<h3 className={styles.postTitle}>
-						<Link href="/"><a>Blog Title</a></Link>
-					</h3>
-					<p className={styles.postDescription}>123 date</p>
-					<Link href="/"><a>Read post →</a></Link>
-				</li>
-				<li className={styles.post}>
-					<h3 className={styles.postTitle}>
-						<Link href="/"><a>Blog Title</a></Link>
-					</h3>
-					<p className={styles.postDescription}>123 date</p>
-					<Link href="/"><a>Read post →</a></Link>
-				</li>
-				<li className={styles.post}>
-					<h3 className={styles.postTitle}>
-						<Link href="/"><a>Blog Title</a></Link>
-					</h3>
-					<p className={styles.postDescription}>123 date</p>
-					<Link href="/"><a>Read post →</a></Link>
-				</li>
-				<li className={styles.post}>
-					<h3 className={styles.postTitle}>
-						<Link href="/"><a>Blog Title</a></Link>
-					</h3>
-					<p className={styles.postDescription}>123 date</p>
-					<Link href="/"><a>Read post →</a></Link>
-				</li>
+				{blogs.map((blog: any) => (
+					<li key={blog.sys.id} className={styles.post}>
+						<h3 className={styles.postTitle}>
+							<Link href={"/" + blog.fields.slug}><a>{blog.fields.title}</a></Link>
+						</h3>
+						<p className={styles.postDescription}>{blog.sys.createdAt}</p>
+						<Link href={"/" + blog.fields.slug}><a>Read post →</a></Link>
+					</li>
+				))}
 			</ol>
 		</div>
 	)
